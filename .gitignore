@@ -1,0 +1,66 @@
+# --- Secrets & local credentials (never commit) ---
+.env
+.env.*
+!.env.example
+config.py
+!config.py.example
+credentials.json
+*-credentials.json
+service-account*.json
+token.json
+token.pickle
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+.eggs/
+*.egg-info/
+*.egg
+pip-log.txt
+pip-delete-this-directory.txt
+.mypy_cache/
+.ruff_cache/
+.pytype/
+
+# --- Testing & coverage ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# --- PyInstaller ---
+build/
+dist/
+
+# --- Playwright / Chrome session data ---
+playwright_profile/
+YOUR_CHROME_PROFILE_PATH_HERE/
+
+# --- Vercel (local project link & build output) ---
+.vercel/
+
+# --- OS & editors ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.code-workspace
+
+# --- Logs & scratch ---
+*.log
+.cache/
+tmp/
+temp/

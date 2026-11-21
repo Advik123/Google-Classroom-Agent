@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homework Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <style>
+      @media (max-width: 780px) {
+        .mobile-tabbar {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="app-sidebar" aria-label="Primary navigation">
+        <div class="sidebar-brand">The Scriptum</div>
+        <nav class="sidebar-nav">
+          <a class="sidebar-item is-active" href="{{ url_for('index') }}">
+            <span class="sidebar-icon">📋</span>
+            <span>Dashboard</span>
+          </a>
+          <a class="sidebar-item" href="{{ url_for('help_page') }}">
+            <span class="sidebar-icon">💡</span>
+            <span>Homework Help</span>
+          </a>
+          <a class="sidebar-item" href="{{ url_for('study_page') }}">
+            <span class="sidebar-icon">🎓</span>
+            <span>Study</span>
+          </a>
+        </nav>
+        <a class="sidebar-logout" href="{{ url_for('logout') }}">
+          <span class="sidebar-logout-icon" aria-hidden="true">🚪</span>
+          <span class="sidebar-logout-text">Sign out</span>
+        </a>
+      </aside>
+
+      <div class="page-shell">
+        <header class="top-bar">
+          <h1 class="title">Homework</h1>
+          <div class="top-bar-right">
+            <p id="updatedAt" class="updated-at">Last updated: --</p>
+            <button id="refreshButton" class="refresh-btn" aria-label="Refresh">
+              ↻
+            </button>
+          </div>
+        </header>
+
+        <main id="dashboard" class="dashboard"></main>
+
+        <div id="toast" class="toast" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <nav class="mobile-tabbar" aria-label="Primary navigation">
+      <a class="mobile-tabbar-item is-active" href="{{ url_for('index') }}">
+        <span>📋</span>
+        <span>Dashboard</span>
+      </a>
+      <a class="mobile-tabbar-item" href="{{ url_for('help_page') }}">
+        <span>💡</span>
+        <span>Homework Help</span>
+      </a>
+      <a class="mobile-tabbar-item" href="{{ url_for('study_page') }}">
+        <span>🎓</span>
+        <span>Study</span>
+      </a>
+    </nav>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>

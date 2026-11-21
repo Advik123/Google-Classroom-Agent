@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Study Tool</title>
+    <link rel="stylesheet" href="{{ url_for('study_asset', filename='style.css') }}" />
+  </head>
+  <body>
+    <div class="app-layout study-layout">
+      <aside class="app-sidebar" aria-label="Primary navigation">
+        <div class="sidebar-brand">The Scriptum</div>
+        <nav class="sidebar-nav">
+          <a class="sidebar-item" href="{{ url_for('index') }}">
+            <span class="sidebar-icon">📋</span>
+            <span>Dashboard</span>
+          </a>
+          <a class="sidebar-item" href="{{ url_for('help_page') }}">
+            <span class="sidebar-icon">💡</span>
+            <span>Homework Help</span>
+          </a>
+          <a class="sidebar-item is-active" href="{{ url_for('study_page') }}">
+            <span class="sidebar-icon">🎓</span>
+            <span>Study</span>
+          </a>
+        </nav>
+        <a class="sidebar-logout" href="{{ url_for('logout') }}">
+          <span class="sidebar-logout-icon" aria-hidden="true">🚪</span>
+          <span class="sidebar-logout-text">Sign out</span>
+        </a>
+      </aside>
+
+      <div class="page-shell study-shell">
+        <header class="top-bar study-top-bar">
+          <h1 class="title">The Digital Curator</h1>
+          <button id="historyToggle" class="history-toggle" type="button">☰ History</button>
+        </header>
+
+        <main class="study-main">
+          <section class="study-workspace">
+            <div class="study-progress-track">
+              <div id="studyProgressBar" class="study-progress-bar"></div>
+            </div>
+
+            <div class="study-tabs" role="tablist" aria-label="Study sections">
+              <button class="study-tab is-active" data-tab="upload" type="button">Upload</button>
+              <button class="study-tab" data-tab="flashcards" type="button">Flashcards</button>
+              <button class="study-tab" data-tab="quiz" type="button">Quiz</button>
+            </div>
+
+            <section id="uploadSection" class="study-panel is-active">
+              <div class="input-mode-toggle">
+                <button class="input-mode-btn is-active" data-input-mode="file" type="button">
+                  Upload File
+                </button>
+                <button class="input-mode-btn" data-input-mode="text" type="button">Type a Topic</button>
+              </div>
+
+              <div id="fileModePanel" class="input-mode-panel is-active">
+                <div id="studyUploadZone" class="study-upload-zone" tabindex="0">
+                  <input
+                    id="studyFileInput"
+                    class="file-input"
+                    type="file"
+                    accept=".pdf,image/jpeg,image/png,image/webp,image/gif"
+                  />
+                  <div class="upload-icon">⬆</div>
+                  <p class="upload-title">Drop an image or PDF</p>
+                  <p class="upload-subtitle">Supported formats: PDF, PNG, JPEG (up to 20MB)</p>
+                  <button id="studyFileButton" class="upload-button" type="button">
+                    Select from Library
+                  </button>
+                </div>
+                <p id="selectedFileName" class="selected-file-name"></p>
+              </div>
+
+              <div id="textModePanel" class="input-mode-panel">
+                <label for="topicInput" class="help-label">Topic prompt</label>
+                <textarea
+                  id="topicInput"
+                  class="study-topic-input"
+                  maxlength="1200"
+                  placeholder="e.g. Create flashcards to review the Civil War"
+                ></textarea>
+                <p id="topicCounter" class="topic-counter">0 / 1200</p>
+              </div>
+
+              <div class="study-output-toggle-wrap">
+                <p class="generate-label">Generate:</p>
+                <div class="study-output-toggle">
+                  <button id="flashcardsModeToggle" class="mode-toggle-btn is-active" type="button">
+                    Flashcards
+                  </button>
+                  <button id="quizModeToggle" class="mode-toggle-btn is-active" type="button">Quiz</button>
+                </div>
+              </div>
+
+              <button id="generateButton" class="study-generate-btn" type="button">
+                Commence Curation
+              </button>
+
+              <div id="studyLoading" class="study-loading" hidden>
+                <div class="study-spinner"></div>
+                <p id="studyLoadingText">Generating study content...</p>
+              </div>
+            </section>
+
+            <section id="flashcardsSection" class="study-panel" aria-live="polite">
+              <div id="flashcardStage" class="flashcard-stage">
+                <button id="flashPrevButton" class="nav-arrow" type="button">←</button>
+                <button id="flashNextButton" class="nav-arrow" type="button">→</button>
+
+                <div id="flashcardShell" class="flashcard-shell">
+                  <div id="flashcardCard" class="flashcard-card" tabindex="0">
+                    <div class="flashcard-face flashcard-front">
+                      <h2 id="flashFrontText">No flashcards yet</h2>
+                      <p>Click to flip</p>
+                    </div>
+                    <div class="flashcard-face flashcard-back">
+                      <p id="flashBackText">Generate study material to begin.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flashcard-meta">
+                  <p id="flashCounter" class="flash-counter">0 / 0</p>
+                  <div class="flash-action-split">
+                    <button id="markKnownButton" type="button">Mark as known</button>
+                    <button id="markLearningButton" type="button">Still learning</button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="flashSummary" class="flash-summary" hidden></div>
+            </section>
+
+            <section id="quizSection" class="study-panel" aria-live="polite">
+              <div id="quizStage" class="quiz-stage">
+                <p id="quizCounter" class="quiz-counter">0 / 0</p>
+                <h2 id="quizQuestion" class="quiz-question">Generate a quiz to begin.</h2>
+                <div id="quizOptions" class="quiz-options"></div>
+                <div id="quizExplanation" class="quiz-explanation" hidden>
+                  <p id="quizExplanationText" class="quiz-explanation-text"></p>
+                </div>
+                <button id="quizNextButton" class="quiz-next-btn" type="button" hidden>Next</button>
+              </div>
+              <div id="quizSummary" class="quiz-summary" hidden></div>
+            </section>
+          </section>
+
+          <aside id="historyPanel" class="study-history" aria-label="Session history">
+            <h2 class="history-title">History</h2>
+            <div id="historyList" class="history-list"></div>
+          </aside>
+        </main>
+      </div>
+    </div>
+
+    <nav class="mobile-tabbar" aria-label="Primary navigation">
+      <a class="mobile-tabbar-item" href="{{ url_for('index') }}">
+        <span>📋</span>
+        <span>Dashboard</span>
+      </a>
+      <a class="mobile-tabbar-item" href="{{ url_for('help_page') }}">
+        <span>💡</span>
+        <span>Homework Help</span>
+      </a>
+      <a class="mobile-tabbar-item is-active" href="{{ url_for('study_page') }}">
+        <span>🎓</span>
+        <span>Study</span>
+      </a>
+    </nav>
+
+    <script src="{{ url_for('study_asset', filename='study.js') }}"></script>
+  </body>
+</html>

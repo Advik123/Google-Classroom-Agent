@@ -1,0 +1,3 @@
+# Optional: for main.py + scraper (Playwright). Not used by the Flask web app.
+# pip install -r requirements.txt -r requirements-scraper.txt
+playwright

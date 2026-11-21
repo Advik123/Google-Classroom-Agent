@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homework Help</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <style>
+      @media (max-width: 780px) {
+        .mobile-tabbar {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="app-sidebar" aria-label="Primary navigation">
+        <div class="sidebar-brand">The Scriptum</div>
+        <nav class="sidebar-nav">
+          <a class="sidebar-item" href="{{ url_for('index') }}">
+            <span class="sidebar-icon">📋</span>
+            <span>Dashboard</span>
+          </a>
+          <a class="sidebar-item is-active" href="{{ url_for('help_page') }}">
+            <span class="sidebar-icon">💡</span>
+            <span>Homework Help</span>
+          </a>
+          <a class="sidebar-item" href="{{ url_for('study_page') }}">
+            <span class="sidebar-icon">🎓</span>
+            <span>Study</span>
+          </a>
+        </nav>
+        <a class="sidebar-logout" href="{{ url_for('logout') }}">
+          <span class="sidebar-logout-icon" aria-hidden="true">🚪</span>
+          <span class="sidebar-logout-text">Sign out</span>
+        </a>
+      </aside>
+
+      <div class="page-shell help-page-shell">
+        <header class="top-bar help-top-bar">
+          <h1 class="title">Scholar Mode</h1>
+        </header>
+
+        <main class="help-page">
+          <section class="help-composer card">
+            <h2 class="help-panel-title">The Scriptum</h2>
+            <p class="help-panel-subtitle">
+              Craft your query or present your documents for analysis.
+            </p>
+
+            <div id="contextBanner" class="context-banner" hidden>
+              <span id="contextBannerText"></span>
+              <button
+                id="dismissContextButton"
+                class="context-dismiss"
+                type="button"
+                aria-label="Dismiss assignment context"
+              >
+                ✕
+              </button>
+            </div>
+
+            <label for="questionInput" class="help-label">Your question</label>
+            <textarea
+              id="questionInput"
+              class="help-textarea"
+              rows="8"
+              placeholder="Ask about a concept, assignment step, or problem."
+            ></textarea>
+
+            <section id="uploadZone" class="upload-zone" aria-label="Upload files">
+              <input
+                id="fileInput"
+                class="file-input"
+                type="file"
+                accept=".pdf,image/jpeg,image/png,image/gif,image/webp"
+                multiple
+              />
+              <p class="upload-title">Drag documents or click to browse</p>
+              <p class="upload-subtitle">PDF, JPG, PNG, GIF, WEBP up to 20MB</p>
+              <button id="uploadButton" class="upload-button" type="button">
+                Select files
+              </button>
+              <div id="filePreviewList" class="file-preview-list"></div>
+            </section>
+
+            <button id="sendButton" class="send-button" type="button">
+              Initiate Inquiry
+            </button>
+          </section>
+
+          <section class="help-chat card">
+            <div class="chat-head">
+              <h2 class="help-panel-title">The Dialogue</h2>
+              <button id="newConversationButton" class="new-conversation-btn" type="button">
+                New Conversation
+              </button>
+            </div>
+
+            <div id="chatHistory" class="chat-history">
+              <div id="chatEmptyState" class="chat-empty-state">
+                Upload a worksheet or ask anything
+              </div>
+            </div>
+
+            <div id="typingIndicator" class="typing-indicator" hidden>
+              <span></span><span></span><span></span>
+            </div>
+          </section>
+        </main>
+
+        <div id="toast" class="toast" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <nav class="mobile-tabbar" aria-label="Primary navigation">
+      <a class="mobile-tabbar-item" href="{{ url_for('index') }}">
+        <span>📋</span>
+        <span>Dashboard</span>
+      </a>
+      <a class="mobile-tabbar-item is-active" href="{{ url_for('help_page') }}">
+        <span>💡</span>
+        <span>Homework Help</span>
+      </a>
+      <a class="mobile-tabbar-item" href="{{ url_for('study_page') }}">
+        <span>🎓</span>
+        <span>Study</span>
+      </a>
+    </nav>
+
+    <script src="{{ url_for('static', filename='help.js') }}"></script>
+  </body>
+</html>

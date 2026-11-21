@@ -1,0 +1,65 @@
+# Copy this file to config.py and fill in your values.
+# config.py is gitignored and must not be committed.
+
+import os
+import sys
+from dotenv import load_dotenv
+
+# Detect if we are running as an executable
+if getattr(sys, 'frozen', False):
+    # Running in a PyInstaller bundle (.exe)
+    # The .exe's directory (where .env and credentials.json should be)
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    # Running in a normal Python environment
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Load environment variables from a .env file located next to the .exe or script
+env_path = os.path.join(BASE_DIR, ".env")
+load_dotenv(env_path)
+
+# ==========================================
+# USER CONFIGURATION
+# ==========================================
+
+# 1. Gemini API Key (https://aistudio.google.com/)
+# Prefer GEMINI_API_KEY or GOOGLE_API_KEY in .env. Inline key is optional for local use only.
+_GEMINI_API_KEY_INLINE = ""
+_gemini_env = os.getenv("GEMINI_API_KEY", "").strip()
+_google_ai_env = os.getenv("GOOGLE_API_KEY", "").strip()
+GEMINI_API_KEY = (_GEMINI_API_KEY_INLINE.strip() or _gemini_env or _google_ai_env)
+
+# 2. Path to your Google Service Account credentials JSON (local / non-Vercel).
+# On Vercel, use GOOGLE_CREDENTIALS_JSON or GOOGLE_CREDENTIALS_B64 instead.
+GOOGLE_CREDENTIALS_PATH = os.getenv("GOOGLE_CREDENTIALS_PATH", os.path.join(BASE_DIR, "credentials.json"))
+
+# 3. Your Google Classroom email account
+CLASSROOM_ACCOUNT = "you@school.edu"
+
+# 4. Your Chrome Profile Path for Playwright to use your saved login.
+# See README_SETUP.md for how to find this.
+# Example Windows: r"C:\Users\YourName\AppData\Local\Google\Chrome\User Data"
+# Example Mac: "/Users/YourName/Library/Application Support/Google/Chrome"
+CHROME_PROFILE_PATH = os.getenv(
+    "CHROME_PROFILE_PATH",
+    r"C:\Users\YourName\AppData\Local\Google\Chrome\User Data",
+)
+
+# 4b. Chrome profile folder name ("Default", "Profile 1", etc.)
+# Check chrome://version → Profile Path
+CHROME_PROFILE_DIR = os.getenv("CHROME_PROFILE_DIR", "Default")
+
+# 5. List of exactly matching class names to check
+CLASS_NAMES = [
+    "Your Class Name Exactly As Shown In Classroom",
+]
+
+# 5b. Google Doc ID for the homework log (or set HOMEWORK_LOG_DOC_ID in the environment; required on Vercel)
+_doc_id = (os.getenv("HOMEWORK_LOG_DOC_ID", "") or "").strip()
+HOMEWORK_LOG_DOC_ID = _doc_id if _doc_id else None
+
+# 6. Direct Agenda Links (Google Slides)
+# Optional: map class name → slides URL to skip Classroom navigation
+AGENDA_LINKS = {
+    # "Your Class Name Exactly As Shown In Classroom": "https://docs.google.com/presentation/d/.../edit",
+}
